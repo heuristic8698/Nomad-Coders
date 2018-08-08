@@ -1,0 +1,329 @@
+ #2-1 Creating React Components with JSX
+1. 컴포넌트 지정
+ - 프로젝트를 시작하기 전에 컴포넌트를 설정
+ - 강의에서 다룰 컴포넌트 : 무비 리스트 컴포넌트, 무비 컴포넌트(영화 카드), 이미지 컴포넌트
+ - 무비 리스트 컴포넌트는 모든 컴포넌트를 포함하는 가장 큰 컴포넌트,  app 컴포넌트라고 할 것
+
+2. 스크립트 파일 확인
+ - 스크립트 시작(yarn start), VSC 실행(code .)
+ - App.js가 App 컴포넌트를 의미, 코드를 보면 jsx 코드로 작성되어 있는 것을 확인할 수 있음
+ - JSX는 React Component를 만들 때 사용하는 언어(html과 유사)
+ - 규칙은 간단, css에서 class는 classname, logo는 상위에 import 되어 있음
+ - 수업에서 만들 컴포넌트는 무비 리스트 컴포넌트(앱 컴포넌트), 무비 카드(무비), 무비커버(이미지)
+ - 각각의 컴포넌트는 다른 파일에서 작업
+
+3. 컴포넌트의 동작
+ - App.js에서 div 내부 코드와 App.css 코드 삭제
+ - 컴포넌트 클래스는 각각의 function과 method를 가지고 있음
+ - 모든 컴포넌트는 render function을 가지고 있음
+ - render는 무언가를 보여주는 function
+ - 예를 들어 yarn start를 하면 JS의 모든 코드를 가져와서 html 파일에 담아서 브라우저에서 화면 출력
+ - 그 html 파일은 public 폴더에서 찾을 수 있고, 이것이 CRA로 만들어진 파일
+
+4. 페이지 출력 화면 수정
+ - public 폴더에서 index.html 파일을 확인 React app을 movie app으로 변경, 코멘트 삭제
+ - 현재 index.html 파일의 화면 구성은 비어 있음
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <title>Movie App</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+  </body>
+</html>
+
+ - App.js 에서 div 태그 사이에 hello를 쓰면 브라우저에서 출력
+import React, { Component } from 'react';
+import './App.css';
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        hello
+      </div>
+    );
+  }
+}
+
+ - 개발자 도구를 확인하면 root div 내부에 data-reactroot class 가 App으로 hello가 포함
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <title>Movie App</title>
+  <style type="text/css">body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+</style><style type="text/css">.App {
+
+}
+</style><style type="text/css"></style></head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"><div class="App">hello</div></div>
+  <script type="text/javascript" src="/static/js/bundle.js"></script>
+
+</body></html>
+
+ - index.js를 보면 React, ReactDOM, css, 컴포넌트'app'을 import
+ - 명령어를 살펴보면 ReactDom이 render 함수를 호출, 그 대상은 App, id가 root 인 곳에 출력 
+ - React는 UI 라이브러리
+ - ReactDOM은 웹사이트에 출력을 도와주는 모델, Document Object Model
+ - React를 웹사이트에 올리고 싶을 때는 reactDOM을 사용
+ - React를 모바일 앱에 올리고 싶을 때는 reactNative
+ - 기억할 것은 ReactDom은 1개의 컴포넌트를 출력하고 그 document 안에 엘리먼트가 있는 id는 root
+ - root는 index.html 에 숨어 있음
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+registerServiceWorker();
+
+5. Movie 컴포넌트 생성
+ - 이제 public 폴더는 닫고 컴포넌트를 만들 것 만들 컴포넌트는 app, 파일은 이미 만들어져 있음
+ - app 컴포넌트 안에 표시할 movie 컴포넌트를 만들 것, Movie.js, Movie.css 파일 생성
+ - app.js를 살펴보면 class와 export 요소를 확인할 수 있음
+ - Movie.js 도 형식을 참고해서 작성, 컴포넌트 생성 시 반드시 render 함수를 포함해야함
+import React, { Component } from 'react';
+import'./Movie.css';
+
+class Movie extends Component{
+    render(){
+        return (
+            <h1>hello this is a movie</h1>
+        )       
+    }
+}
+
+export default Movie
+
+ - 작성한 Movie 컴포넌트를 App.js에 포함
+import React, { Component } from 'react';
+import './App.css';
+import Movie from './Movie';		// Movie 컴포넌트 참조
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Movie />			// Movie 컴포넌트 호출
+      </div>
+    );
+  }
+}
+
+export default App;
+
+ - 정리 : Movie 컴포넌트 생성 -> 렌더 함수 설정 -> 리턴 값 설정 -> html로 내용 작성
+  -> App 컴포넌트에서 import 후 호출 -> 브라우저 확인
+ - 컴포넌트를 여러 번 호출할 수도 있음, 하지만 ID 없이 여러 번 호출하는 것이 바람직하지는 않음
+
+6. MoviePoster 컴포넌트 추가
+ - 이번에는 movie 컴포넌트 안에 실제로 영화 정보를 작성
+ - 이미지를 넣을 것 
+class Movie extends Component{
+    render(){
+        return (
+            <div>
+                <MoviePoster />
+                <h1>hello this is a movie</h1>
+            </div>
+        )       
+    }
+}
+
+class MoviePoster extends Component{
+    render(){
+        return(
+            <img src="https://upload.wikimedia.org/wikipedia/ko/2/22/%EB%8F%84%EB%A6%AC%EB%A5%BC_%EC%B0%BE%EC%95%84%EC%84%9C.jpg"/>
+        )
+    }
+}
+
+ - MoviePoster 컴포넌트 생성 후 render로 img를 리턴, Movie에 MoviePoster를 포함
+ - 정리 : 컴포넌트 생성 -> Render -> 리턴 -> JSX
+ - JSX는 리액트로 작성하는 html
+
+#2-2 Dataflow with Props
+ - 리액트의 2개 주요 개념이 state와 props
+ - 이번에는 props를 다룰 것 
+ - 메인 컴포넌트 app은 모든 영화 정보를 가져오고 그 영화 목록을 보여줄 것
+ - 다시 말하면 메인 컴포넌트는 무비 리스트가 있다는 뜻
+ - 그리고 리스트 안에 영화 카드에는 해당 영화 정보가 각각 담김
+ - 부모 컴포넌트인 app 컴포넌트가 자식 컴포넌트인 movie 컴포넌트에게 정보를 준다는 것
+ - 그리고 이것을 props를 통해서 함
+
+1. 영화 제목 출력
+ - App.js에 영화 제목 문자열 리스트를 생성
+const movies = [
+  "Matrix",
+  "Full Metal Jacket",
+  "Oldboy",
+  "Star Wars" 
+]
+ - 이 영화의 제목을 자식 컴포넌트인 무비 컴포넌트로 보내려면 호출 시 파라메터를 작성
+      <div className="App">
+        <Movie title={movies[0]}/>
+        <Movie title={movies[1]}/>
+        <Movie title={movies[2]}/>
+        <Movie title={movies[3]}/>
+      </div>
+ - Movie 컴포넌트는 title이라는 데이터를 얻게 됨
+ - Movie 컴포넌트에서 로그를 통해 props 확인
+render(){
+        console.log(this.props);	// 로그 확인
+        return (
+            <div>
+                <MoviePoster />
+                <h1>hello this is a movie</h1>
+            </div>
+        )       
+    }
+ - 모든 파일 저장 후 메인 페이지로 가서 개발자 도구로 콘솔을 확인해보면 제목들이 표시되는 것을 볼 수 있음
+ - 화면에 제목 출력, Movie.js 파일 수정
+        return (
+            <div>
+                <MoviePoster />
+                <h1>{this.props.title}</h1>
+            </div>
+        )   
+ - Movie를 호출할 때 설정한 property인 title이 있기 때문에 this.props.title을 통해 해당 값을 가져올 수 있음
+ - JSX 명령을 실행하려면 괄호 안에 입력해야함
+
+2. 영화 포스터 출력
+ - 영화 이미지 URL 저장 배열 추가 및 Movie 컴포넌트에 poster props 추가
+const movieTitles = [
+  "Matrix",
+  "Full Metal Jacket",
+  "Oldboy",
+  "Star Wars" 
+]
+
+const movieImages = [
+  "http://ticketimage.interpark.com/Movie/still_image/V16/V1601447p_s01.gif",
+  "http://image.cine21.com/cine21/poster/2005/0607/M0010102_.jpg",
+  "https://upload.wikimedia.org/wikipedia/ko/4/48/Old_Boy.jpg",
+  "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+]
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Movie title={movieTitles[0]} poster={movieImages[0]}/>
+        <Movie title={movieTitles[1]} poster={movieImages[1]}/>
+        <Movie title={movieTitles[2]} poster={movieImages[2]}/>
+        <Movie title={movieTitles[3]} poster={movieImages[3]}/>
+      </div>
+    );
+  }
+}
+
+ - URL 정보를 Movie 컴포넌트를 거쳐서 MoviePoster 컴포넌트까지 전달한 후 해당 URL 이미지 호출
+class Movie extends Component{
+    render(){
+        console.log(this.props);
+        return (
+            <div>
+                <MoviePoster poster={this.props.poster} />
+                <h1>{this.props.title}</h1>
+            </div>
+        )       
+    } 
+}
+
+class MoviePoster extends Component{
+    render(){
+        return(
+            <img src={this.props.poster}/>
+        )
+    }
+}
+
+ - 데이터 소스는 메인 컴포넌트가 다 가지고 있음
+ - 타이틀, 영화 포스터 정보를 메인에 다 집어넣고, 그걸 각각 컴포넌트에 props를 이용해 정보 출력
+ - 이것이 데이터 플로우
+
+#2-3 List with .map
+ - 이번에는 API에서 긁어온 엄청난 양의 영화정보를 불러 오기 위해서 array를 생성
+ - movies array를 생성한 후 title과 poster를 속성으로 갖는 원소 생성
+ - 기존 값 복사 후에 movieTitles와 movieImages를 삭제
+const movies = [
+  {
+    title: "Matrix",
+    poster: "http://ticketimage.interpark.com/Movie/still_image/V16/V1601447p_s01.gif"
+  },
+  {
+    title: "Full Metal Jacket",
+    poster: "http://image.cine21.com/cine21/poster/2005/0607/M0010102_.jpg"
+  },
+  {
+    title: "Oldboy",
+    poster: "https://upload.wikimedia.org/wikipedia/ko/4/48/Old_Boy.jpg"
+  },
+  {
+    title: "Star Wars",
+    poster: "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+  }
+]
+
+ - map을 이용해서 array 생성
+<div className="App">
+        {movies.map(movie => {
+          return <Movie title={movie.title} poster={movie.poster}/>
+        })}
+      </div>
+
+ - movies array에서 map 함수를 실행 movie라는 element 명을 정의하고 Movie 컴포넌트에 
+ array 내에 있는 값들을 사이클을 돌면서 movie element의 title과 poster를 전달해서 리턴
+
+
+#2-4 Validating Props with Prop Types
+ - 이전 실습에서 웹 페이지 콘솔을 확인하면 에러가 발생
+Warning: Each child in an array or iterator should have a unique "key" prop.
+ - array에서 각 Element 들은 고유한 key props를 가져야함
+{movies.map((movie, index) => {
+          return <Movie title={movie.title} poster={movie.poster} key={index}/>
+        })}
+ - 만약 props에 내가 원하는 자료형만 출력하고 싶다면?
+ - Movie 컴포넌트 안에 static으로 propTypes를 정의
+    static propTypes = {
+        title: PropTypes.string
+        poster: PropTypes.string
+    }
+ - PropTypes이 리액트와 분리되면서 설치 후에 사용 가능
+ - 디버깅 콘솔 터미널에서 yarn add prop-types 또는 npm install --save prop-types
+ - 설치가 되면 import PropTypes from 'prop-types';
+ - 허용 자료형을 string에서 number로 바꾸면 에러 메시지 발생
+ - 허용 자료형 뒤에 .isRequired 가 붙으면 해당 prop 는 반드시 있어야 함 없으면 에러
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        poster: PropTypes.string.isRequired
+    }
+ - 이를 통해서 부모 컴포넌트에서 얻는 정보의 종류가 무엇인지 있는지 없는지도 알 수 있음
+ - MoviePoster에도 propTypes 추가
+    static propTypes = {
+        poster: PropTypes.string.isRequired
+    }
+
+
+
+ 
