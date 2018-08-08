@@ -1,0 +1,34 @@
+#3-1 Lifecycle Events on React
+1. Render
+ - 컴포넌트는 여러 기능들을 정해진 순서대로 실행
+ - Render를 할 때 componentWillMount -> render -> componentDidMount를 차례로 실행
+ - 컴포넌트가 존재할 때 WillMount, Render, DidMount 3개는 자동으로 실행
+  componentWillMount(){
+    console.log("will mount")
+  }
+
+  componentDidMount(){
+    console.log("did mount")
+  }
+
+  render() {
+    console.log("did log")
+
+ - 예를 들어 영화앱과 같은 어플리케이션을 만든다면 WillMount를 할 때 API 작업을 요청할 것
+ - 해당 작업이 수행되면 그 다음에 데이터 관련된 작업
+ - 이러한 사이클을 알아두는 것이 컴포넌트를 다룰 때 유용
+ - will mount를 통해 사이클이 시작되었음을 알고
+ - render를 통해 컴포넌트가 React 프로젝트에 생성된 것을 알고
+ - did mount를 통해 컴포넌트 생성이 정상적으로 이루어졌음을 알 수 있음
+
+2. Update
+ - Update componentWillReceiveProps() -> shouldComponentUpdate() -> componentWillUpdate()
+  -> render() -> componentDidUpdate()
+ - componentWillReceiveProps는 컴포넌트가 새로운 props를 받았음을 의미
+ - shouldComponentUpdate는 old props와 new props를 살펴본 다음 이전과 새 prop가 다르면 Update == true로 생각
+ - componentWillUpdate는 업데이트가 이루어질 것을 알림
+ - 그다음은 render 마지막은 componentDidUpdate 
+ - 이러한 Life Cycle을 알아두면 컴포넌트를 빌드할 때 유용할 수 있음
+ - 예를 들어 component will update를 수행할 때 어플리케이션에서 Spinner를 출력할 수도 있음
+ - 업데이트 이후에는 돌고있던 로딩 중 메시지나 아이콘을 숨김
+ - React에서 다양한 function들이 이러한 Life Cycle을 가지고 실행
