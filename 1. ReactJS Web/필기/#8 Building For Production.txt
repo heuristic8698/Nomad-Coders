@@ -1,0 +1,87 @@
+#8-1 Building For Production
+ - 깃허브 페이지를 통해서 static file을 업로드 할 수 있음
+ - static file이란 자바스크립트, css, html과 같은 프런트엔드 파일, 백엔드 파일은 안됨
+ - 사용을 위해서는 깃허브 계정, 깃허브 프로젝트, 깃허브 프로젝트의 브랜치가 필요
+ - 그리고 브랜치 이름은 gh-pages 여야함
+ - gh-pages로 올라간 파일은 웹사이트에 프로젝트명, 유저이름과 함께 보임
+ - 깃허브는 코드만 보여줄 뿐 실행하지는 않음
+ - gh-pages는 코드를 실행하고 웹사이트로 보이게 해줌
+ - 방법은 터미널을 이용
+ - yarn build를 입력하면 css를 압축해서 build라는 public 폴더에 저장
+ - build -> static -> js 폴더를 확인하면 모든 js 파일이 종합되어 있는 것을 볼 수 있음
+ - 로컬호스트 상태에서는 코드가 압축되어 있지 않고 느리고 최적화되지 않은 상태
+ - build를 하면서 최적화, 압축됨
+ - 터미널에서 build가 완료되면 깃허브 페이지에 프로젝트를 업로드하는 설명이 나옴
+The project was built assuming it is hosted at the server root.
+You can control this with the homepage field in your package.json.
+For example, add this to build it for GitHub Pages:
+ - package.json에 홈페이지 코드 추가 후 저장
+{
+  "name": "movie_app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-lines-ellipsis": "^0.13.2",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "homepage": "http://heuristic8698.github.io/movie_app"
+}
+ - 다시 yarn build 로 최적화
+ - 최적화 후 메시지 확인
+The project was built assuming it is hosted at /movie_app/.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+To publish it at http://heuristic8698.github.io/movie_app, run:
+
+  yarn add --dev gh-pages
+ - yarn add --dev gh-pages 실행
+ - 다음 메시지를 보면
+Add the following script in your package.json.
+
+    // ...
+    "scripts": {
+      // ...
+      "predeploy": "npm run build",
+      "deploy": "gh-pages -d build"
+    }
+ - package.json에 코드 추가
+{
+  "name": "movie_app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-lines-ellipsis": "^0.13.2",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "homepage": "http://heuristic8698.github.io/movie_app",
+  "devDependencies": {
+    "gh-pages": "^1.2.0"
+  }
+}
+ - 하라는 데로 따라하되 중요한 것은 username과 프로젝트 name을 제대로 작성하는 것
+ - 이제 yarn run deploy를 하면 username과 password를 확인한 후에 완성
+ - 깃허브 프로젝트로 가면 2개의 브랜치를 확인할 수 있고 하나는 gh-pages
+ - 방금 작업한 것이 새로운 브랜치를 만든 것
+ - github 관련 내용은 카카오톡 클론 코딩 참조
+ - React 관련 내용은 인스타그램 클론 코딩에서 더 다룸

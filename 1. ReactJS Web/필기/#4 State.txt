@@ -1,0 +1,163 @@
+#4-1 Thinking in React: Component State
+ - state는 React Component 안에 있는 Object
+ - state가 바뀔 때 마다 컴포넌트는 다시 render
+ - App.js App 클래스에 state 추가 후 출력
+  state = {
+    greeting: 'Hello!'
+  }
+
+  render() {
+    return (
+      <div className="App">
+        {this.state.greeting}
+ - state를 변경할 때는 this.state.greeting으로 접근할 수 없고 setState를 사용
+  componentDidMount(){
+    setTimeout(() => {
+      this.setState({
+        greeting: 'Hello again!'
+      })
+    }, 5000)
+  }
+
+#4-2 Practicing this.setState()
+ - 컴포넌트 외부에 있는 무비 리스트를 state 안으로 이동
+  state = {
+    greeting: 'Hello!',
+    movies: [
+      {
+        title: "Matrix",
+        poster: "http://ticketimage.interpark.com/Movie/still_image/V16/V1601447p_s01.gif"
+      },
+      {
+        title: "Full Metal Jacket",
+        poster: "http://image.cine21.com/cine21/poster/2005/0607/M0010102_.jpg"
+      },
+      {
+        title: "Oldboy",
+        poster: "https://upload.wikimedia.org/wikipedia/ko/4/48/Old_Boy.jpg"
+      },
+      {
+        title: "Star Wars",
+        poster: "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+      }
+    ]
+  }
+
+ - movies array를 제거했으므로 props 에서 전달할 배열도 this.state.movies로 수정
+  render() {
+    return (
+      <div className="App">
+        {this.state.greeting}
+        {this.state.movies.map((movie, index) => {
+
+ - setTimeout 함수는 일정 시간 후에 함수를 실행할 수 있음
+  componentDidMount(){
+    setTimeout(function(){
+      console.log('hello')
+    }, 2000)
+  }
+ - 새로 고침 2초 후에 콘솔에 로고가 찍힘
+ - 위 방식은 오래된 자바스크립트 방식
+  componentDidMount(){
+    setTimeout(() => {
+      console.log('hello')
+    }, 2000)
+  }
+ - () => 로 작성해도 동일한 수행
+ - 영화 목록 1개 추가
+  componentDidMount(){
+    setTimeout(() => {
+      this.setState({
+        movies: [
+          ...this.state.movies,
+          {
+            title: "Trainspotting",
+            poster: "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+          }
+        ]
+      })
+    }, 2000)
+  }
+ - 영화 목록 대체 (...this.state.movies 제거)
+   componentDidMount(){
+    setTimeout(() => {
+      this.setState({
+        movies: [
+          {
+            title: "Trainspotting",
+            poster: "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+          }
+        ]
+      })
+    }, 2000)
+  }
+ - ...this.state.movies는 이전 리스트를 그대로 두라는 의미
+ - 사용하는 위치에 따라 출력되는 데이터 순서도 달라짐
+  componentDidMount(){
+    setTimeout(() => {
+      this.setState({
+        movies: [
+          {
+            title: "Trainspotting",
+            poster: "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+          },
+          ...this.state.movies
+        ]
+      })
+    }, 2000)
+  }
+
+#4-3 Loading States
+ - 필요한 데이터가 항상 즉시 존재하지는 않을 것
+ - 데이터 없이 컴포넌트가 로딩 후
+ - 데이터를 위해 API를 호출해서 API가 데이터를 주면 컴포넌트의 state를 업데이트
+ - API 콜을 타임아웃 기능으로 유사하게 구현해볼 것
+ - 우선 state를 function으로 모두 이동 처음 state는 비어있는 상태
+componentDidMount(){
+    setTimeout(() => {
+      this.setState({
+        movies: [
+          {
+            title: "Matrix",
+            poster: "http://ticketimage.interpark.com/Movie/still_image/V16/V1601447p_s01.gif"
+          },
+          {
+            title: "Full Metal Jacket",
+            poster: "http://image.cine21.com/cine21/poster/2005/0607/M0010102_.jpg"
+          },
+          {
+            title: "Oldboy",
+            poster: "https://upload.wikimedia.org/wikipedia/ko/4/48/Old_Boy.jpg"
+          },
+          {
+            title: "Star Wars",
+            poster: "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+          },
+          {
+            title: "Trainspotting",
+            poster: "http://image.cine21.com/cine21/poster/2005/0302/M0010017_.jpg"
+          }
+        ]
+      })
+    }, 2000)
+  }
+
+ - 실행하려고 하면 에러 발생
+ - map에서 존재하지 않는 state의 movies를 참조하면서 에러가 발생
+ - 여기서 loading state가 필요
+ - state 상태에 따라 화면을 결정할 함수 정의
+  _renderMovies = () => {
+    const movies = this.state.movies.map((movie, index) => {
+      return <Movie title={movie.title} poster={movie.poster} key={index}/>
+    })
+    return movies
+  }
+ - _를 붙인 이유는 자체적인 함수와 직접 만든 함수를 구분하기 위함
+ - render 함수에서 this.state.movies의 값을 확인해서 화면을 출력하도록 설정
+  render() {
+    return (
+      <div className="App">
+        {this.state.movies ? this._renderMovies() : 'Loading'}
+      </div>
+    );
+  }

@@ -1,0 +1,39 @@
+#5-1 Smart vs Dumb Components
+ - 모든 컴포넌트에 state가 있는 것은 아님
+ - state가 없는 stateless functional 컴포넌트도 존재한다
+ - state 유무를 통해서 dumb component와 smart component로 구분
+ - smart component는 state가 있음
+ - dumb component는 state가 없음
+ - 두 컴포넌트는 props를 가지고 있음
+ - dumb  componet 정의는 class 대신 function 사용, this.props가 아니는 매개변수명으로 사용
+function MoviePoster({poster}){
+    return (
+        <img src={poster} alt="Movie Poster"/>
+    )
+}
+ - 어떤 컴포넌트는 그냥 return을 하기 위해 존재
+ - 이러한 컴포넌트는 willMount, function, update state 등이 필요 없음
+ - poster 같은 1개의 props 와 1개의 html 태그만 필요
+ - prop types 검사는 function 외부에서 function명.propTypes로 정의
+MoviePoster.propTypes = {
+    poster : PropTypes.string.isRequired
+}
+
+ - Movie 컴포넌트르 functional로 변경
+function Movie({ title, poster }) {
+    return (
+        <div>
+            <MoviePoster poster={poster} />
+            <h1>{title}</h1>
+        </div>
+    )
+}
+
+Movie.propTypes = {
+    title: PropTypes.string.isRequired,
+    poster: PropTypes.string.isRequired
+}
+
+ - functional 컴포넌트를 사용하면 render나 willMount, didMount 필요없이 html만 리턴 해주면 됨
+ - 하지만 state를 잃고, 업데이트 같은 것이 이루어 질 수 없음
+ - 단순한 무비 컴포넌트 같은 것들은 functional 컴포넌트로도 충분
