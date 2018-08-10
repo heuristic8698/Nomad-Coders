@@ -1,0 +1,224 @@
+#2-1 Basic React Native Concepts
+ - React Native의 가장 Basic 개념은 div 같은 html이 없다는 것
+ - 즉 return 할 수 있는 컴포넌트가 정해져 있음
+ - 이러한 컴포넌트는 React Native Document에서 확인할 수 있음
+ - https://facebook.github.io/react-native/docs/getting-started
+ - react-native를 import하고 div, span 같은 태그 없이 View 컴포넌트를 가져와 사용
+ - react-native의 컴포넌트는 모바일 환경에 따라 Native하게 변화
+ - 예를 들어 Activity Indicator를 추가해보면
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator/>
+        <Text>Hello I'm a Native Deveveloper Now!</Text>
+      </View>
+    );
+  }
+}
+ - 로딩 중 모양이 화면에 표시
+ - AVD는 미리 켜져있어야 하는 듯, 폰에서도 expo 앱을 실행해야 함
+ - snack expo에서는 웹상에서 코드를 테스트해볼 수 있음
+ - 강의에서는 그냥 작동하는 데 지금은 Appetize.io 계정이 필요한 듯
+ - iOS와 안드로이드를 비교해보면 로딩 애니메이션이 다름
+ - return 할 수 있는 것은 div, span 등이 아닌 view, text 같은 특정 컴포넌트
+ - 코드로 돌아가면 React Native의 디자인은 flexbox로 가능, flexbox는 css 수업에서 다뤘음
+ - 자세히 보면 styles 라는 object를 생성함 StyelSheet.create 이용, 이후에 다룰 것
+ - view 태그에 style 속성으로 styles.container, styles object의 containter 속성을 지정
+ - 그리고 stylesheet에 문제가 있다면 에러를 바로 보여줌
+ - React 에서 실수를 해도 아무 일이 일어나지 않는 반면 React Native는 세심하고 엄격
+ - 그렇기 때문에 ios/android 둘다 가능한 것
+ - Text 대신 div나 span을 쓰더라도 Text를 사용해야 한다고 에러가 뜸
+ - 이러한 엄격한 패턴을 익히는 게 프로그래밍을 익힐 때 도움이 됨
+ - React Native 사용법 정리
+ - 컴포넌트 import
+ - css와 비슷한 style이 있음
+ - 명확하고 엄격한 규칙이 정해져 있다는 것
+
+#2-2 React Native Layouts with Flexbox
+ - 이번에는 flexbox를 이용해서 React Native Layout을 생성
+ - flexbox로 디자인을 짤수 있는 앱은 React Native가 유일
+ - 이미 웹 개발에 익숙한 사람에게는 굉장한 장점
+ - flexbox가 뭔지 모르면 카카오톡 클론 과정 참조
+ - flexbox를 사용할 수는 있지만 기존 css와 완전히 동일하지는 않음
+ - 예를 들어 flex 비율을 1:5로 해서 모바일 환경의 레이아웃을 구성할 수 있음
+ export default class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  redView:{
+    flex:1,
+    backgroundColor:'red'
+  },
+  yellowView:{
+    flex:5,
+    backgroundColor:'yellow'
+  }
+});
+ - 다른 예시로 높이와 너비를 50씩 주고 containter의 flexDirection을 row로 설정
+ - html, css에서는 flex direction 기본 값이 row지만 React Native에서는 기본 값이 column
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    flexDirection: 'row'
+  },
+  redView:{
+    height:50,
+    width:50,
+    backgroundColor:'red'
+  },
+  yellowView:{
+    height:50,
+    width:50,
+    backgroundColor:'yellow'
+  }
+});
+ - 이러한 내용들을 바탕으로 style을 작성하면 됨
+ - justifyContent, alignItems 설정
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  redView:{
+    height:50,
+    width:50,
+    backgroundColor:'red'
+  },
+  yellowView:{
+    height:50,
+    width:50,
+    backgroundColor:'yellow'
+  }
+});
+ - css와 property가 조금씩 다름
+ - 단어끼리는 대문자로 이어주고 모든 value는 string
+ - object를 만들려면 자바스크립트 작성하듯 쉼표로 연결
+ - 다른 예시1
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent:'space-around',
+    alignItems:'flex-end',
+    flexDirection:'row'
+  },
+  redView:{
+    height:50,
+    width:50,
+    backgroundColor:'red'
+  },
+  yellowView:{
+    height:50,
+    width:50,
+    backgroundColor:'yellow'
+  }
+});
+
+ - 다른 예시2
+export default class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+        <View style={styles.redView}/>
+        <View style={styles.yellowView}/>
+      </View>
+    );
+  }
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent:'space-around',
+    alignItems:'flex-end',
+    flexDirection:'row'
+  },
+  redView:{
+    height:50,
+    width:50,
+    backgroundColor:'red',
+    alignSelf:'flex-start'
+  },
+  yellowView:{
+    height:50,
+    width:50,
+    backgroundColor:'yellow',
+    alignSelf:'center'
+  }
+});
+
+ - 다른 예시3
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent:'space-around',
+    alignItems:'flex-end',
+    flexDirection:'row'
+  },
+  redView:{
+    height:50,
+    width:50,
+    backgroundColor:'red',
+  },
+  yellowView:{
+    height:50,
+    width:50,
+    backgroundColor:'yellow',
+  }
+});
+
+ - 다른 예시 4
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent:'space-around',
+    alignItems:'flex-end',
+    flexDirection:'row',
+    flexWrap:'wrap'
+  },
+  redView:{
+    height:50,
+    width:50,
+    backgroundColor:'red',
+  },
+  yellowView:{
+    height:50,
+    width:50,
+    backgroundColor:'yellow',
+  }
+});
+

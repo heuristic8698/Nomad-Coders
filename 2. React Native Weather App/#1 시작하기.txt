@@ -1,0 +1,116 @@
+#1-1 What are we building
+ - 본 강의에서는 스크린을 통해 날씨와 온도를 표시해주는 어플을 만들 것
+ - 7개의 화면(로딩, 비, 맑음, 번개, 흐림, 눈, 이슬비)을 구성
+ - ios와 안드로이드 둘다 만들 것
+
+#1-2 What are we using
+ - 프로젝트는 React Native를 사용할 것
+ - React Native를 사용하기 쉽게 도와주는 expo.io를 이용해 개발
+ - 텍스트 에디터는 Visual Studio Code를 사용할 것
+ - 아톰이나 서브라임 텍스르틀 사용해도 무방, VSC를 사용하는 이유는 빨라서
+
+#1-3 Requirements
+ - 수업에 필요한 것들
+ - 첫번째, ReactJS
+ - 두번째, 자바스크립트 기본기
+ - 세번째, 인터넷이 가능한 컴퓨터
+ - iOS 앱을 만드려면 Mac, android는 윈도우
+ - 맥이 없으면 끝까지 진도를 만들기 어려울 수 있음
+ - 앱스토어에 올리는 것이 문제
+ - 설치할 소프트웨어는 nodejs, npm, 텍스트에디터
+
+#1-4 What is React Native4
+ - React Native는 Native 웹 어플리케이션을 빌드하게 도와주는 UI 라이브러리
+ - React Native는 html, css 어플리케이션을 생성하지 않음
+ - 자바스크립트로 작성되어서 Native라고 생각하지 않는 경향이 있지만
+  마지막 컴파일링 할 때 각각 iOS(objective-c)/android(java) 네이티브 코드로 실행
+ - React Native는 JSX, JSP로 작성하고 그 뒤에 페이스북의 기술을 통해
+  objective-c, java로 변환되는 것
+ - js와 objective-c, js 와 java가 연결
+ - React JS 코드와 비슷
+ - 리액트도 있고 컴포넌트도 있음, 차이는 패키지가 react-native
+ - 웹에서 div, span이 있는 것처럼 React Native는 view, text 같은 태그가 존재
+ - 그러한 태그 요소들이 전부 Native 코드로 변환
+ - React Native의 장점은
+ - 첫 번째 자바스크립트를 활용할 수 있다는 것
+ - 두 번째 커뮤니티가 엄청 크다는 것
+ - 세 번째 많은 회사가 사용하고 있다는 점(인스타그램, 에어비엔비, 페이스북)
+ - showcase react native를 검색하면 React Native를 사용하는 많은 회사를 확인할 수 있음
+ - 최고 장점은 iOS-android 간 코드를 공유할 수 있다는 점
+ - 여러 사용가능한 API가 존재 : https://facebook.github.io/react-native/docs/components-and-apis.html
+ - 전반적으로는 iOS/android 모두 사용이 가능함
+ - React Native는 개발하기가 쉬어서 많이 활용됨
+ - x code는 컴파일 시간이 오래 걸리고 새로고침도 안됨
+ - 반면 React Native는 웹사이틀를 만드는 것처럼 쉬움
+ - Layout이 FlexBox로 구현된다는 것도 좋음
+ - 모바일을 위한 레이아웃을 FlexBox로 구현할 수 있음
+
+#1-5 What is Expo
+ - expo는 React Native로 앱을 만드는 것을 도와줌
+ - xcode, android studio사용이 필요 없음
+ - android studio를 위한 시뮬레이터를 관리
+ - xcode 사용 전혀 없이 ios를 위한 시뮬레이터를 관리
+ - expo가 없을 때는 React Native로 xcode, android studio 작업을 별도로 했음
+ - expo를 이용하면 iOS/android 전용 네이티브 앱을 만들 수 있고, 앱 테스트가 빠르고 편리
+ - expo client를 다운받아서 앱을 테스트 할 수도 있음
+ - 컴퓨터에서 구현하고 있는 프로젝트를 모바일 환경에서 Expo client를 통해 테스트할 수 있음
+ - 메시지 보내기, 비디오 녹화, 사진 ㅈ끼기 같은 기능을 빠르게 테스트
+ - xcode, android studio, 계정 설정 등 귀찮은 과정은 다 스킵
+ - 방법은 컴퓨터에서 expo를 열고 폰으로 코드를 스캔해서 모바일 환경에서 접근
+ - 컴퓨터에서 변경사항이 있으면, 모바일에서도 자동으로 새로고침이 되서 적용
+ - 앱을 배포했을 때, code push 라는 것이 있음
+ - review process, 유저에게 업데이트를 하게끔 유도하는 등의 프로세스가 많음
+ - 업데이트 프로세스를 스킵하고 앱이 알아서 업데이트
+ - expo는 전체 앱을 앱스토어에 올리는 것이 아니라 expo client에게 push
+ - 그러면 client가 앱을 실행하기 위한 코드를 다운
+ - 업데이트가 앱에서 이루어지는 것이 아니라 서버에서 업데이트가 이루어짐
+ - 앱이 열릴 때마다 서버에서 새로운 버전의 코드를 다운
+ - 모든 승인 과정을 스킵할 수 있고, 이것을 위해서는 expo client를 다운 받으면 됨
+ - 사용이 쉽고 간단하고 시뮬레이터를 이용할 필요없이 이것만 사용하면 됨
+
+#1-6 Installing Expo and Creating a new project
+ - expo client는 홈페이지에서 다운 가능 : https://expo.io/
+ - 웹 개발 기능이 생기면서 위치가 변경 : https://github.com/expo/xde/blob/master/README.md
+ - 운영체제에 맞는 XDE를 설치한 후 실행하면 로그인 창이 나옴
+ - 프로젝트를 관리하기 용이하도록 계정을 생성하는 것이 좋음
+ - 로그인 후 Create Project
+ - Project 이름을 작성하고 template은 Blank로 설정, Tab Navigation은 네비 설정을 원할 때 선택
+ - 폴더 경로를 설정하고 Create를 클릭하면 프로젝트 파일 다운로드가 시작
+ - React Native, npm, yarn 등 여러 가지를 다운 받음
+ - 프로젝트가 설치되면 React Native Packer가 실행
+ - 폴더 스캔, 로딩 등을 함
+ - 두 가지 옵션이 있는 데 첫 번째는 모바일 환경에서 확인
+ - 시뮬레이터가 설치되지 않았다는 에러가 나올 수도 있는데 우선 진행
+ - 사용할 device에 expo app 설치 후 실행
+ - 컴퓨터의 expo에서 share를 클릭하고 나오는 QR코드를 device로 스캔
+ - 컴퓨터와 javascript를 빌드하고 device는 javascrip를 다운로드 
+ - device에 있는 빈화면에는 자신 만의 로고를 넣을 수 있음
+ - device에서 다운로드가 완료되면 Open up App.js to start working on your app! 이라는 메시지 출력
+ - 컴퓨터에서 VSC 실행 후 아까 설치한 프로젝트 폴더를 open
+ - device를 흔들면 설정 화면이 뜨고 Disable Live Reload를 볼 수 있는데
+  Live Reload는 컴퓨터에서 수정된 내용을 device에서 즉시 새로고침해주는 기능
+ - VSC에서 App.js의 문구를 수정 후 저장하면
+export default class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Hello I'm a Native Deveveloper Now!</Text>
+      </View>
+    );
+  }
+}
+ - device에서 수정한 내용이 반영되는 것을 확인할 수 있음
+ - 시간을 엄청나게 절약할 수 있음
+ - 이번에는 다신 흔들어서 설정화면을 열고 Live Reload를 Disable
+ - Enable Hot Reloading 설정, 이것은 코드를 저장한 상태로 변경된 부분만 골라서 Reloading을 하는 것
+ - Live Reload는 코드 전체를 새로고침하지만 Hot Reloading은 변경된 부분만 골라서 새로고침
+ - Device에서 Android나 iOS 시뮬레이터를 사용할 수도 있는 xcode나 android studio가 깔려 있어야 함
+
++ 안드로이드 스튜디오 설치 18.08.10
+ - 안드로이드 스튜디오 설치 전에 JDK 설치 필요
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+ - 최신 버전은 아직 안드로이드가 지원하지 않아서 안정성이 높고 가장 많이 사용되고 있는 8버전 설치
+ - 안드로이드 스튜디오 설치, 현재 최신 버전은 3.1.4
+https://developer.android.com/studio/ 
+ - 안드로이드 스튜디오에서 AVD 생성 후 expo에서 device -> Open on Adroid를 클릭
+ - AVD에 expo가 설치됨
