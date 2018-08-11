@@ -1,0 +1,311 @@
+#3-1 Building the Loading View
+ - React Native 로 App을 만들 때는 항상 local state로 작업
+ - 로딩 화면 구성
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+
+export default class App extends Component {
+  state = {
+    isLoaded: false
+  }
+  render() {
+    const { isLoaded } = this.state;
+    return (
+      <View style={styles.container}>
+        {isLoaded ? null : (
+          <View style={styles.loading}>
+            <Text style={styles.loadingText}>Getting the weather</Text>
+          </View>
+        )}
+      </View>
+    );
+  }
+}
+ - React의 Component를 import 하고 App 클래스에서 extends
+ - state에 is Loaded 추가, API를 불러오기 전까지는 false
+ - render에서 isLoaded로 로딩이 이루어졌는지 판단
+ - 로딩이 되었으면 정보 출력, 지금은 아직 null
+ - 로딩이 안되었으면 로딩 화면 출력
+ - 각각의 styles 를 지정
+ - styles의 object 추가 및 설정
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  loading:{
+    flex: 1,
+    backgroundColor:"#FDF6AA",
+    justifyContent: "flex-end",
+    paddingLeft: 25
+  },
+  loadingText:{
+    fontSize: 38,
+    marginBottom: 100
+  }
+ - 정리
+ - state 생성 후 isLoaded props 추가
+ - Text, View에 style 지정
+ - shorthand property는 사용할 수 없음
+
+#3-2 Building the Weather View
+ - 이제 날씨 정보 화면 구성
+ - Weather.js 파일 생성
+import React, { Component } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from "expo";
+
+export default class Weather extends Component {
+    render() {
+        return (
+            <LinearGradient colors={["00C6FB", "#005BEA"]} style={styles.container}>
+            </LinearGradient>
+        )
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})
+ - Component, StyleSheet, Text, View, LinearGradient 를 import
+ - Weather class 생성
+ - render에서 LinearGradient를 return
+ - LinearGradient는 view인데 배경색이 gradient 인 것
+ - LinearGradient는 두 가지 속성이 필요 하나는 from-to에 해당하는 색상, 나머지는 스타일
+ - container style 지정
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})
+
+ - App.js 에서 weather class 를 import 한 후 로딩 시 출력하도록 코드 수정
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import Weather from "./Weather";
+
+export default class App extends Component {
+  state = {
+    isLoaded: true
+  }
+  render() {
+    const { isLoaded } = this.state;
+    return (
+      <View style={styles.container}>
+        {isLoaded ? (
+          <Weather />
+        ) : (
+            <View style={styles.loading}>
+              <Text style={styles.loadingText}>Getting the weather</Text>
+            </View>
+          )}
+      </View>
+    );
+  }
+}
+ - Weather를 import 하고 isLoaded 값을 true로 수정
+ - Weather 컴포넌트 추가
+ - 이제 LinearGradietn 안에 구성 추가
+ - 상단의 첫번째 컨테이너에는 아이콘과 텍스트가 위치
+ - 하단의 두번째 컨테이너에는 제목과 부제가 위치
+ - 컨테이너를 입력하고 style 설정
+export default class Weather extends Component {
+    render() {
+        return (
+            <LinearGradient colors={["#00C6FB", "#005BEA"]} style={styles.container}>
+                <View style={styles.upper}>
+                    <Text>Icon here!</Text>
+                    <Text style={styles.temp}>34</Text>
+                </View>
+                <View style={styles.lower}>
+                    <Text style={styles.title}>Raining like a MF</Text>
+                    <Text style={styles.subtitle}>For more info look outside</Text>
+                </View>
+            </LinearGradient>
+        )
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    upper: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    temp: {
+        fontSize: 38,
+        backgroundColor: "transparent",
+        color: "white",
+        marginTop: 10
+    },
+    lower: {
+        flex: 1,
+        alignItems: "flex-start",
+        justifyContent: "flex-end",
+        paddingLeft: 25
+    },
+    title: {
+        fontSize: 38,
+        backgroundColor: "transparent",
+        color: "white",
+        marginBottom: 10,
+        fontWeight: "300"
+    },
+    subtitle: {
+        fontSize: 24,
+        backgroundColor: "transparent",
+        color: "white",
+        marginBottom: 24
+    }
+})
+
+
+#3-3 Working with Icons
+ - 이번엔 아이콘을 만들어 볼 것
+ - 먼저 폰트 사이즈를 38에서 48로 변경
+ - 상태바를 없애기 위해서 React 팀이 만든 api를 사용할 것
+ - App.js에 StatusBar 추가후 StatusBar 스타일을 설정
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
+
+export default class App extends Component {
+  state = {
+    isLoaded: true
+  }
+  render() {
+    const { isLoaded } = this.state;
+    return (
+      <View style={styles.container}>
+        <StatusBar hidden={true} />
+        {isLoaded ? (
+          <Weather />
+        ) : (
+            <View style={styles.loading}>
+              <Text style={styles.loadingText}>Getting the weather</Text>
+            </View>
+          )}
+      </View>
+    );
+  }
+}
+ - barStyle을 light-content, dark-content로 설정할 수도 있음
+ - hidden을 true로 설정하면 상태창을 숨김
+ - 아이콘 설정은 expo에 있는 vector icon 패키지를 사용 : https://expo.github.io/vector-icons/
+ - 아이콘, 폰트어썸 등의 단어가 낯설다면 카카오톡 클론 참조
+ - 강의에서는 ion icon을 사용할 것
+ - 사용 방법은 Weather.js에서 import ionicons
+import { Ionicons } from "@expo/vector-icons";
+ - ionicons 추가
+            <LinearGradient colors={["#00C6FB", "#005BEA"]} style={styles.container}>
+                <View style={styles.upper}>
+                    <Ionicons color="white" size={144} name="ios-rainy" />
+                    <Text style={styles.temp}>34º</Text>
+                </View>
+                <View style={styles.lower}>
+                    <Text style={styles.title}>Raining like a MF</Text>
+                    <Text style={styles.subtitle}>For more info look outside</Text>
+                </View>
+            </LinearGradient>
+ - ionicons 속성은 color, size, name
+ - name은 정확하게 사용해야함
+ - https://expo.github.io/vector-icons/ 문서 페이지에서 확인
+ - 한번 import 하면 해당 icon의 이름만 알면 자유롭게 사용할 수 있음
+ - 부모 태그인 upper container에 배경색을 투명으로 설정해야 icon이 보임
+    upper: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "transparent"
+    },
+
+#3-4 Getting Geolocation
+ - 자바스크립트를 공부했다면 navigator에서 유저의 위치정보를 얻을 수 있다는 것을 알 것
+ - 개발자 도구 콘솔에서 테스트
+navigator.geolocation.getCurrentPosition(function(position) {
+console.log(position)
+})
+ - 이러한 방법은 React에서도 동일
+ - 우선 isLoaded를 false로 설정
+  state = {
+    isLoaded: false
+  }
+ - margin 값도 다시 수정
+  loadingText: {
+    fontSize: 38,
+    marginBottom: 24
+  }
+ - 위치 정보를 가져오고, 에러 발생 시 함수 정의
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          isLoaded: true
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+ - App 컴포넌트가 Mount 되고 나면 navigator.geolocation.getCurrentPosition 실행
+ - 성공적으로 위치 정보를 가져오면 position에 리턴 값을 받고 isLoaded를 true로 변경
+ - 실패하면 error에 리턴 값을 받아서 error 메시지를 콘솔에 출력
+ - 앱을 실행하면 처음에 Loading 화면이 보이고 위치 정보를 찾으면 isLoaded가 true로 변경
+ - 날씨 화면으로 변경됨
+
+#3-5 Handling Error on Geolocation
+ - 날씨 정보를 받기 전에 위치 정보 에러 처리 방법 먼저 할 것
+ - 콘솔 로그를 사용하기 보다 state를 이용할 것
+ - state 에 error prop 추가
+  state = {
+    isLoaded: false,
+    error:null
+  }
+
+ - Mount 후에 error가 있으면 state에 error를 업데이트
+   componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          isLoaded: true
+          //error: "Something went wrong"
+        });
+      },
+      error => {
+        this.setState({
+            error: error
+        });
+      }
+    );
+  }
+
+ - error prop을 추가하고 error 값을 확인해서 출력하는 코드 추가
+ - 상태 창은 숨김
+  render() {
+    const { isLoaded, error } = this.state;
+    return (
+      <View style={styles.container}>
+        <StatusBar hidden={true} />
+        {isLoaded ? (
+          <Weather /> 
+        ) : (
+            <View style={styles.loading}>
+              <Text style={styles.loadingText}>Getting the weather</Text>
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            </View>
+          )}
+      </View>
+    );
+  }
+}
+
+ - errorText 스타일 설정
+  errorText:{
+    color:"red",
+    backgroundColor: "transparent",
+    marginBottom: 40
+  },

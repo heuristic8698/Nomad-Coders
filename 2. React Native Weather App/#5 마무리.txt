@@ -1,0 +1,57 @@
+# Changing the icons and testing on iOS
+ - 이전에 mist와 haze 아이콘이 없어서 import하는 icon 라이브러리를 변경
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+ - function weather 에서도 Ionicon을 MaterialCommunityIcons로 변경
+<MaterialCommunityIcons color="white" size={144} name={weatherCases[weatherName].icon} />
+ - weatherCases에서 icon 이름도 변경
+const weatherCases = {
+    Rain: {
+        colors: ["#00C6FB", "#005BEA"],
+        title: "비와요",
+        subtitle: "우산 깜빡하지 마세요",
+        icon: "weather-rainy"
+    },
+    Clear: {
+        colors: ["#FEF253", "#FF7300"],
+        title: "맑아요",
+        subtitle: "비타민D 보충하러 나가요",
+        icon: "weather-sunny"
+    },
+    Thunderstorm: {
+        colors: ["#00ECBC", "#007ADF"],
+        title: "우르릉쾅쾅",
+        subtitle: "로또 1등 확률보다 벼락 맞을 확률이 높아요",
+        icon: "weather-lightning"
+    },
+    Clouds: {
+        colors: ["#D7D2CC", "#304352"],
+        title: "구름",
+        subtitle: "몽실몽실 뭉게뭉게",
+        icon: "weather-cloudy"
+    },
+    Snow: {
+        colors: ["#7DE2FC", "#B9B6E5"],
+        title: "눈와요",
+        subtitle: "개랑 아이들만 좋아해요",
+        icon: "weather-snowy"
+    },
+    Drizzle: {
+        colors: ["#89F7FE", "#66A6FF"],
+        title: "이슬비",
+        subtitle: "오랜만에 우비를 입어보고 싶지 않나요",
+        icon: "weather-hail"
+    },
+    Haze: {
+        colors: ["#D7D2CC", "#304352"],
+        title: "안개",
+        subtitle: "그라믄 안개",
+        icon: "weather-fog"
+    },
+    Mist: {
+        colors: ["#D7D2CC", "#304352"],
+        title: "안개2",
+        subtitle: "잠에서 안개",
+        icon: "weather-fog"
+    }
+}
+ - 저장 후 실행하면 바뀐 아이콘으로 표시됨

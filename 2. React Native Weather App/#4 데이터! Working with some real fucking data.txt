@@ -1,0 +1,187 @@
+#4-1 Getting the Weather
+ - 날씨 정보를 가져오기 위해서는 api 사용
+ - 최고의 날씨 api는 open weather map
+ - 우리가 필요한 건 current weather data
+ - 도시 id, 이름, 위치정보를 통해서 얻을 수 있음
+ - https://openweathermap.org/current 에서 By geographic coordinates를 이용
+ - API URL : api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}
+ - 결과 값은 위도 , 경도, 날씨, 맑은, 맑은 하늘, 온도 등의 형태로 나옴
+ - 이 api를 사용하려면 api key를 얻어야함
+ - 방법은 https://openweathermap.org/api에서 사용하려는 api의 subscribe 클릭
+ - https://openweathermap.org/price에 있는 여러 옵션 중 Free에 Get API key and Start 클릭
+ - 회원가입을 하라고 뜨는 데 회원가입을 먼저 함
+ - 회원가입 후 로그인을 하면 https://home.openweathermap.org/api_keys에서 API key를 확인할 수 있음
+ - 확인한 API key를 App.js에 문자열로 저장
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import Weather from "./Weather";
+
+ const API_KEY = "~~~"
+
+ - 이제 데이터를 불러오는 방법을 살펴보면
+ - api를 가져올 _getWeather 함수 정의
+  _getWeather = (lat, long) => {
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&$lon=${long}&APPID=${API_KEY}`
+    )
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+      });
+  }
+ - navigator에서 position을 가져오면 _getWeather 함수 실행
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this._getWeather(position.coords.latitude, position.coords.longitude)
+      },
+ - 여기까지 하면 콘솔에서 위치정보를 확인할 수 있음
+ - 이제 날씨정보를 state에 저장
+ - https://openweathermap.org/current 하단에 json 항목을 보면
+  weather 파라메터에서  weather.id 날씨 정보 id 인 것을 확인할 수 있음
+ - https://openweathermap.org/weather-conditions 에서는 각 id가 어떤 값에 해당하는 지를 알 수 있음
+ - 날씨와 온도를 state에 저장
+  state = {
+    isLoaded: false,
+    error: null,
+    temperature:null,
+    name:null
+  }
+ - state 명은 temperature와 name
+ - _getWeather에서 받아온 온도와 날씨정보를 업데이트
+  _getWeather = (lat, long) => {
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&APPID=${API_KEY}`
+    )
+      .then(response => response.json())
+      .then(json => {
+        //console.log(json);
+        this.setState({
+          temperature:json.main.temp,
+          name:json.weather[0].main,
+          isLoaded: true
+        })
+      });
+  }
+ - 정리
+ - 위치정보 확인에서 받아온 위도, 경도를 토대로 api를 호출
+ - api에서 받은 json object에서 main안에 temp와 weather array의 첫번째 element에서 날씨정보를 가져옴
+
+#4-2 Hooking the component to the weather data
+ - 이제 데이터를 바탕으로 날씨 컴포넌트로 돌아가서 refactoring
+ - refactoring은 코드의 구조를 변경하는 것
+ - weather 컴포넌트를 state 컴포넌트(class)가 아닌 stateless 컴포넌트(functioin)으로 변경
+function Weather() {
+    return (
+        <LinearGradient colors={["#00C6FB", "#005BEA"]} style={styles.container}>
+            <View style={styles.upper}>
+                <Ionicons color="white" size={144} name="ios-rainy" />
+                <Text style={styles.temp}>34º</Text>
+            </View>
+            <View style={styles.lower}>
+                <Text style={styles.title}>Raining like a MF</Text>
+                <Text style={styles.subtitle}>For more info look outside</Text>
+            </View>
+        </LinearGradient>
+    );
+}
+
+export default Weather;
+
+ - 날씨 컴포넌트는 크게 3가지가 바뀜 : 아이콘, 온도, 타이틀
+ - 다시 말해 그것에 해당하는 props가 필요, function에서는 parameter로 사용
+ - 우선 App.js에서 state의 name과 temperature가 업데이트 되면 render가 반영하도록 수정
+  render() {
+    const { isLoaded, error, temperature, name } = this.state;
+    return (
+      <View style={styles.container}>
+        <StatusBar hidden={true} />
+        {isLoaded ? (
+          <Weather weatherName={name} temp={Math.floor(temperature - 273.15)} />
+        ) : (
+            <View style={styles.loading}>
+              <Text style={styles.loadingText}>Getting the weather</Text>
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            </View>
+          )}
+      </View>
+    );
+  }
+ - temperature, name 을 this.state로 초기화
+ - Weather 컴포넌트를 호출할 때 props로 name과 temperture를 섭씨로 변환해서 전달
+ - Weather.js에서 넘겨받은 name에 따라 출력 값을 다르게 하도록 미리 배열을 설정
+const weatherCases = {
+    Rain: {
+        colors:["#00C6FB", "#005BEA"],
+        title: "비와요",
+        subtitle: "우산 깜빡하지 마세요",
+        icon: "ios-rainy"
+    },
+    Clear:{
+        colors:["#FEF253", "#FF7300"],
+        title: "맑아요",
+        subtitle: "비타민D 보충하러 나가요",
+        icon: "ios-sunny" 
+    },
+    Thunderstorm:{
+        colors:["#00ECBC", "#007ADF"],
+        title: "우르릉쾅쾅",
+        subtitle: "로또 1등 확률보다 벼락 맞을 확률이 높아요",
+        icon: "ios-thunderstorm" 
+    },
+   Clouds:{
+        colors:["#D7D2CC", "#304352"],
+        title: "구름",
+        subtitle: "몽실몽실 뭉게뭉게",
+        icon: "ios-cloudy" 
+    },
+    Snow:{
+        colors:["#7DE2FC", "#B9B6E5"],
+        title: "눈와요",
+        subtitle: "개랑 아이들만 좋아해요",
+        icon: "ios-snow" 
+    },
+    Drizzle:{
+        colors:["#89F7FE", "#66A6FF"],
+        title: "이슬비",
+        subtitle: "오랜만에 우비를 입어보고 싶지 않나요",
+        icon: "ios-rainy-outline" 
+    },
+    Haze:{
+        colors:["#D7D2CC", "#304352"],
+        title: "안개",
+        subtitle: "그라믄 안개",
+        icon: "ios-cloudy"
+    }
+}
+ - colors는 gradient라서 from-to 값 2개를 설정
+ - icon을 잘 모르겠으면 https://expo.github.io/vector-icons/ 참조
+ - 사용법은 3강에 있음
+ - 이제 Weather function에서 전달받은 weatherName과 temp를 이용해서 코드 수정
+function Weather({ weatherName, temp}) {
+    // Rain Clear Thunderstorm Clouds Snow Drizzle
+    // console.log(weatherName);
+    return (
+        <LinearGradient colors={weatherCases[weatherName].colors} style={styles.container}>
+            <View style={styles.upper}>
+                <Ionicons color="white" size={144} name={weatherCases[weatherName].icon} />
+                <Text style={styles.temp}>{temp}º</Text>
+            </View>
+            <View style={styles.lower}>
+                <Text style={styles.title}>{weatherCases[weatherName].title}</Text>
+                <Text style={styles.subtitle}>{weatherCases[weatherName].subtitle}</Text>
+            </View>
+        </LinearGradient>
+    );
+}
+ - weatherCases[weatherName].colors
+ - weatherCases[weatherName].icon
+ - weatherCases[weatherName].title
+ - weatherCases[weatherName].subtitle
+ - {temp}
+ - propTypes 설치 후 설정
+ - yarn add prop-types 잘 모르면 React JS 수업 참조
+Weather.propTypes = {
+    temp: Proptypes.number.isRequired,
+    weatherName: Proptypes.string.isRequired
+}
+ - weatherName에 따라서 나오는 화면이 달라짐
