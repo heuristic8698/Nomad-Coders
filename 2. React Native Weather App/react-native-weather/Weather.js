@@ -77,7 +77,7 @@ function Weather({ weatherName, temp }) {
     // console.log(weatherName);
     //const weatherNam = "Mist"
     return (
-        <LinearGradient colors={weatherCases[weatherNamr].colors} style={styles.container}>
+        <LinearGradient colors={weatherCases[weatherName].colors} style={styles.container}>
             <View style={styles.upper}>
                 <MaterialCommunityIcons color="white" size={144} name={weatherCases[weatherName].icon} />
                 <Text style={styles.temp}>{temp}º</Text>
